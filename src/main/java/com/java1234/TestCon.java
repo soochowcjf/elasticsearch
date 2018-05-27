@@ -19,10 +19,15 @@ public class TestCon {
     private static String host = "192.168.25.131";
     //端口号
     private static int port = 9300;
+    //集群名称
+    public static final String CLUSTER_NAME = "my-application";
+
+    private static Settings.Builder settings = Settings.builder().put("cluster.name",CLUSTER_NAME);
+
     private TransportClient client=null;
 
     public static void main(String[] args) throws Exception {
-        TransportClient client = new PreBuiltTransportClient(Settings.EMPTY)
+        TransportClient client = new PreBuiltTransportClient(settings.build())
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(TestCon.host), TestCon.port));
         System.out.println(client);
         client.close();

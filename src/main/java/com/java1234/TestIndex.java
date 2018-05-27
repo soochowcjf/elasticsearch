@@ -27,6 +27,11 @@ public class TestIndex {
     private static String host = "192.168.25.131";
     //端口号
     private static int port = 9300;
+    //集群名称
+    public static final String CLUSTER_NAME = "my-application";
+
+    private static Settings.Builder settings = Settings.builder().put("cluster.name",CLUSTER_NAME);
+
     private TransportClient client=null;
 
     /**
@@ -35,7 +40,7 @@ public class TestIndex {
      */
     @Before
     public void getClient() throws Exception {
-        client = new PreBuiltTransportClient(Settings.EMPTY)
+        client = new PreBuiltTransportClient(settings.build())
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(TestIndex.host), TestIndex.port));
         System.out.println(client);
     }
@@ -60,7 +65,7 @@ public class TestIndex {
         jsonObject.addProperty("publishDate","2013-11-22");
         jsonObject.addProperty("price",100);
 
-        IndexResponse response = client.prepareIndex("book", "java", "1").setSource(XContentType.JSON).get();
+        IndexResponse response = client.prepareIndex("book", "java", "1").setSource(jsonObject.toString(),XContentType.JSON).get();
         System.out.println("索引名称："+response.getIndex());
         System.out.println("类型："+response.getType());
         System.out.println("文档ID："+response.getId());
