@@ -72,7 +72,7 @@ public class TestSearch {
     public void searchAll() throws Exception {
         //得到查询请求构造
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch("film").setTypes("dongzuo");
-        //得到查询结果
+        //得到查询结果，查询所有
         SearchResponse searchResponse = searchRequestBuilder.setQuery(QueryBuilders.matchAllQuery())
                                                             .execute()
                                                             .actionGet();
@@ -171,6 +171,7 @@ public class TestSearch {
         //遍历hits
         for (SearchHit hit : hits) {
             System.out.println(hit.getSourceAsString());
+            //取出高亮结果
             System.out.println(hit.getHighlightFields());
         }
     }
